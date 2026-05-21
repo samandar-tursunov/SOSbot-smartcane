@@ -1,0 +1,7 @@
+[project]
+name = "sosbot-smartcane"
+version = "0.1.0"
+description = "SOS location routing to district Telegram groups"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []

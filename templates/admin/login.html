@@ -1,0 +1,66 @@
+{% extends "registration/base.html" %}
+
+{% load i18n jazzmin %}
+{% get_jazzmin_settings request as jazzmin_settings %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block content %}
+<form action="{{ app_path }}" method="post" class="sos-login-form">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+        <div class="sos-login-alert sos-login-alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>
+                {% blocktrans trimmed %}
+                    You are authenticated as {{ username }}, but are not authorized to
+                    access this page. Would you like to login to a different account?
+                {% endblocktrans %}
+            </p>
+        </div>
+    {% endif %}
+    {% if form.errors %}
+        {% if form.username.errors %}
+            <div class="sos-login-alert sos-login-alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>{{ form.username.label }}: {{ form.username.errors|join:', ' }}</p>
+            </div>
+        {% endif %}
+        {% if form.password.errors %}
+            <div class="sos-login-alert sos-login-alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>{{ form.password.label }}: {{ form.password.errors|join:', ' }}</p>
+            </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+            <div class="sos-login-alert sos-login-alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="sos-input-group">
+        <label for="id_username"><i class="fas fa-user"></i> Foydalanuvchi</label>
+        <input type="text" name="username" id="id_username" class="form-control sos-input" placeholder="Username" required autofocus>
+    </div>
+
+    <div class="sos-input-group">
+        <label for="id_password"><i class="fas fa-lock"></i> Parol</label>
+        <input type="password" name="password" id="id_password" class="form-control sos-input" placeholder="Parol" required>
+    </div>
+
+    {% url 'admin_password_reset' as password_reset_url %}
+    {% if password_reset_url %}
+        <div class="sos-login-forgot">
+            <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+        </div>
+    {% endif %}
+
+    <button type="submit" class="sos-login-btn">
+        <i class="fas fa-sign-in-alt"></i>
+        {% trans "Log in" %}
+    </button>
+</form>
+{% endblock %}

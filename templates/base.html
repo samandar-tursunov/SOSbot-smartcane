@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <a href="{% url 'dashboard:home' %}" class="brand">
+                <span class="brand-icon">🆘</span>
+                <span class="brand-text">{{ SITE_NAME }}</span>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'dashboard:home' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'dashboard:api-docs' %}" class="nav-link">API Docs</a>
+                <a href="/admin/" class="nav-link nav-link-admin">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p>&copy; {% now "Y" %} {{ SITE_NAME }} — {{ SITE_TAGLINE }}</p>
+        </div>
+    </footer>
+</body>
+</html>

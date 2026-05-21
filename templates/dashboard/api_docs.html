@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}API Docs — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>📡 API Hujjatlari</h1>
+        <p>Tashqi Telegram bot location qabul qilganda sizning serveringizga push qiladi</p>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="container docs-container">
+        <div class="docs-card">
+            <h2>🔄 Oqim</h2>
+            <ol class="flow-list">
+                <li>Foydalanuvchi <strong>tashqi Telegram bot</strong>ga 📍 location yuboradi</li>
+                <li>Tashqi bot shu koordinatalarni <strong>POST</strong> qiladi → bu endpoint</li>
+                <li>Server eng yaqin tumanni topadi</li>
+                <li><strong>Bizning bot</strong> tuman Telegram guruhiga xabar yuboradi</li>
+            </ol>
+        </div>
+
+        <div class="docs-card">
+            <h2>🔐 Autentifikatsiya</h2>
+            <p>Har bir so'rovda <code>X-API-Key</code> header yuborilishi shart:</p>
+            <pre class="code-block"><code>X-API-Key: your-secure-api-key-for-external-service</code></pre>
+            <p class="text-muted">Alternativ: <code>Authorization: Bearer &lt;SOS_API_KEY&gt;</code></p>
+        </div>
+
+        <div class="docs-card">
+            <h2>🆘 SOS Location — POST</h2>
+            <div class="endpoint-badge">
+                <span class="method post">POST</span>
+                <code>{{ endpoint }}</code>
+            </div>
+
+            <h3>Minimal request</h3>
+            <pre class="code-block"><code>{
+  "latitude": 41.3110810,
+  "longitude": 69.2405620
+}</code></pre>
+
+            <h3>Tavsiya etilgan (Telegram ma'lumotlari bilan)</h3>
+            <pre class="code-block"><code>{
+  "location": {
+    "latitude": 41.3110810,
+    "longitude": 69.2405620
+  },
+  "telegram_user_id": 123456789,
+  "telegram_username": "foydalanuvchi",
+  "telegram_first_name": "Ali",
+  "telegram_message_id": 42,
+  "telegram_chat_id": 123456789
+}</code></pre>
+
+            <table class="docs-table">
+                <thead>
+                    <tr>
+                        <th>Maydon</th>
+                        <th>Turi</th>
+                        <th>Majburiy</th>
+                        <th>Tavsif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>latitude</code></td>
+                        <td>decimal</td>
+                        <td>✅</td>
+                        <td>SOS kenglik (-90 … 90)</td>
+                    </tr>
+                    <tr>
+                        <td><code>longitude</code></td>
+                        <td>decimal</td>
+                        <td>✅</td>
+                        <td>SOS uzunlik (-180 … 180)</td>
+                    </tr>
+                    <tr>
+                        <td><code>location</code></td>
+                        <td>object</td>
+                        <td>✅*</td>
+                        <td>Telegram location obyekti</td>
+                    </tr>
+                    <tr>
+                        <td><code>telegram_user_id</code></td>
+                        <td>int</td>
+                        <td>❌</td>
+                        <td>message.from.id</td>
+                    </tr>
+                    <tr>
+                        <td><code>telegram_username</code></td>
+                        <td>string</td>
+                        <td>❌</td>
+                        <td>message.from.username</td>
+                    </tr>
+                    <tr>
+                        <td><code>telegram_message_id</code></td>
+                        <td>int</td>
+                        <td>❌</td>
+                        <td>message.message_id</td>
+                    </tr>
+                    <tr>
+                        <td><code>telegram_chat_id</code></td>
+                        <td>int</td>
+                        <td>❌</td>
+                        <td>message.chat.id</td>
+                    </tr>
+                    <tr>
+                        <td><code>source_id</code></td>
+                        <td>string</td>
+                        <td>❌</td>
+                        <td>Avtomatik: tg-{chat_id}-{message_id}</td>
+                    </tr>
+                    <tr>
+                        <td><code>notes</code></td>
+                        <td>string</td>
+                        <td>❌</td>
+                        <td>Qo'shimcha izoh</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Muvaffaqiyatli javob (201)</h3>
+            <pre class="code-block"><code>{
+  "success": true,
+  "alert_id": 42,
+  "status": "sent",
+  "district": {
+    "id": 3,
+    "name": "Yunusobod",
+    "code": "yunusobod"
+  },
+  "distance_km": 1.245,
+  "is_inside_boundary": true,
+  "telegram_sent": true,
+  "received_at": "2026-05-22T14:30:01.123456+05:00"
+}</code></pre>
+
+            <h3>Xato javoblar</h3>
+            <pre class="code-block"><code># 401 — API kalit noto'g'ri
+{"success": false, "error": "Unauthorized — invalid or missing API key"}
+
+# 400 — validatsiya xatosi
+{"success": false, "errors": {"latitude": ["..."]}}
+
+# 422 — tuman/guruh topilmadi yoki Telegram xatosi
+{"success": false, "alert_id": 43, "status": "no_group", "error": "..."}</code></pre>
+        </div>
+
+        <div class="docs-card">
+            <h2>💚 Health Check — GET</h2>
+            <div class="endpoint-badge">
+                <span class="method get">GET</span>
+                <code>{{ health_endpoint }}</code>
+            </div>
+            <pre class="code-block"><code>{
+  "status": "ok",
+  "service": "SOSbot SmartCane",
+  "active_districts": 10,
+  "telegram_configured": true
+}</code></pre>
+        </div>
+
+        <div class="docs-card">
+            <h2>🧪 cURL misoli</h2>
+            <pre class="code-block"><code>curl -X POST "{{ endpoint }}" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your-secure-api-key-for-external-service" \
+  -d '{
+    "location": {"latitude": 41.3110810, "longitude": 69.2405620},
+    "telegram_user_id": 123456789,
+    "telegram_message_id": 42,
+    "telegram_chat_id": 123456789
+  }'</code></pre>
+        </div>
+
+        <div class="docs-card">
+            <h2>⚙️ Ishlash tartibi</h2>
+            <ol class="flow-list">
+                <li>Tashqi servis SOS <code>latitude</code> va <code>longitude</code> yuboradi</li>
+                <li>Server nuqtani 10 ta tuman chegaralari bilan solishtiradi</li>
+                <li>Chegara ichida bo'lsa — o'sha tuman; aks holda eng yaqin markaz tanlanadi</li>
+                <li>Tumanga biriktirilgan Telegram guruhiga matn + location yuboriladi</li>
+                <li>Natija bazaga saqlanadi va API javob qaytariladi</li>
+            </ol>
+        </div>
+    </div>
+</section>
+{% endblock %}

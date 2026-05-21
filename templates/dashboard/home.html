@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <span class="hero-badge">Real-time SOS routing</span>
+            <h1>SOS signallarni tuman guruhlariga yo'naltirish</h1>
+            <p class="hero-subtitle">{{ SITE_TAGLINE }}</p>
+            <div class="hero-actions">
+                <a href="{% url 'dashboard:api-docs' %}" class="btn btn-primary">📡 API hujjatlari</a>
+                <a href="/admin/" class="btn btn-outline">⚙️ Admin panel</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card stat-total">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value">{{ total_alerts }}</div>
+                <div class="stat-label">Jami SOS signallar</div>
+            </div>
+            <div class="stat-card stat-success">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value">{{ sent_alerts }}</div>
+                <div class="stat-label">Muvaffaqiyatli yuborilgan</div>
+            </div>
+            <div class="stat-card stat-error">
+                <div class="stat-icon">❌</div>
+                <div class="stat-value">{{ failed_alerts }}</div>
+                <div class="stat-label">Xato / yo'naltirilmagan</div>
+            </div>
+            <div class="stat-card stat-district">
+                <div class="stat-icon">🏛</div>
+                <div class="stat-value">{{ active_districts }}</div>
+                <div class="stat-label">Faol tumanlar</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="container two-col">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🆘 So'nggi SOS signallar</h2>
+            </div>
+            <div class="panel-body">
+                {% if recent_alerts %}
+                <div class="alert-list">
+                    {% for alert in recent_alerts %}
+                    <div class="alert-item status-{{ alert.status }}">
+                        <div class="alert-item-header">
+                            <span class="alert-id">#{{ alert.id }}</span>
+                            <span class="badge badge-{{ alert.status }}">{{ alert.get_status_display }}</span>
+                        </div>
+                        <div class="alert-item-body">
+                            <p class="alert-coords">📍 {{ alert.latitude }}, {{ alert.longitude }}</p>
+                            {% if alert.assigned_district %}
+                            <p class="alert-district">🏛 {{ alert.assigned_district.name }}
+                                {% if alert.distance_to_district_km %}
+                                <span class="text-muted">({{ alert.distance_to_district_km }} km)</span>
+                                {% endif %}
+                            </p>
+                            {% endif %}
+                            <p class="alert-time">🕐 {{ alert.received_at|date:"d.m.Y H:i:s" }}</p>
+                        </div>
+                        <a href="{{ alert.google_maps_url }}" target="_blank" class="alert-map-link">🗺 Xaritada ochish</a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <span class="empty-icon">📭</span>
+                    <p>Hali SOS signal qabul qilinmagan</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🏛 Tumanlar</h2>
+            </div>
+            <div class="panel-body">
+                {% if districts %}
+                <div class="district-list">
+                    {% for district in districts %}
+                    <div class="district-item">
+                        <div class="district-name">{{ district.name }}</div>
+                        <div class="district-meta">
+                            <span class="meta-tag">📍 {{ district.center_latitude }}, {{ district.center_longitude }}</span>
+                            <span class="meta-tag">💬 {{ district.group_count }} guruh</span>
+                            <span class="meta-tag">🆘 {{ district.alert_count }} signal</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <span class="empty-icon">🗺</span>
+                    <p>Tumanlar admin panel orqali qo'shiladi</p>
+                    <a href="/admin/districts/district/add/" class="btn btn-sm btn-primary">+ Tuman qo'shish</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

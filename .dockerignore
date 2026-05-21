@@ -1,0 +1,68 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker (image ichiga kerak emas)
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
+
+# Muhit va maxfiy ma'lumotlar — image ga kirmasin
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Django generated
+staticfiles/
+media/
+*.log
+db.sqlite3
+
+# Test / lint / coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Hujjatlar (image uchun shart emas)
+README.md
+LICENSE
+*.md
+!requirements.txt
+
+# Boshqa
+.python-version
+pyproject.toml
+pixi/
+.pixi/
+*.rdb

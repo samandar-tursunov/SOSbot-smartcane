@@ -1,0 +1,115 @@
+/* Jazzmin admin panel — SOSbot SmartCane branding */
+
+:root {
+    --sos-red: #dc2626;
+    --sos-red-dark: #991b1b;
+    --sos-logo-size-login: 280px;
+    --sos-logo-height-login: 130px;
+    --sos-logo-size-sidebar: 40px;
+}
+
+.brand-link .brand-text {
+    font-weight: 700 !important;
+}
+
+/* ── Sidebar / navbar brand logo ─────────────────────────────────────────── */
+.brand-link .sos-brand-logo,
+.brand-link .brand-image {
+    max-height: var(--sos-logo-size-sidebar) !important;
+    width: auto !important;
+    max-width: 140px !important;
+    height: var(--sos-logo-size-sidebar) !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+    background: #fff;
+    padding: 2px 4px;
+    margin-right: 0.55rem;
+    opacity: 1 !important;
+    float: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.brand-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem;
+}
+
+#jazzy-logo,
+.main-sidebar .brand-link .brand-text {
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+}
+
+/* ── Login page logo ─────────────────────────────────────────────────────── */
+.login-page .login-box {
+    border-top: 3px solid var(--sos-red);
+    max-width: 420px;
+}
+
+.login-page .login-box .login-logo,
+.login-page .login-logo {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0.5rem auto 1.25rem !important;
+    padding: 0 1rem !important;
+    text-align: center !important;
+}
+
+.login-page .login-box .login-logo img,
+.login-page .login-logo img,
+.login-page .login-logo .sos-login-logo {
+    width: var(--sos-logo-size-login) !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: var(--sos-logo-height-login) !important;
+    object-fit: contain !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    padding: 8px 12px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35) !important;
+    border: none !important;
+}
+
+/* Jazzmin default img-circle ni bekor qilish */
+.login-page .login-logo img.img-circle,
+.login-page .login-logo .img-circle {
+    border-radius: 12px !important;
+}
+
+.login-page .login-box-msg {
+    font-weight: 600;
+    padding-bottom: 0.25rem;
+}
+
+/* ── Theme accents ─────────────────────────────────────────────────────── */
+.main-header.navbar-danger {
+    background: linear-gradient(135deg, #991b1b, #dc2626) !important;
+}
+
+.sidebar-dark-danger .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: rgba(220, 38, 38, 0.25) !important;
+    color: #fca5a5 !important;
+}
+
+.btn-danger {
+    background-color: var(--sos-red) !important;
+    border-color: var(--sos-red-dark) !important;
+}
+
+.card-primary.card-outline {
+    border-top: 3px solid var(--sos-red) !important;
+}
+
+.badge-danger {
+    background-color: var(--sos-red) !important;
+}
+
+.content-header h1 {
+    font-weight: 700;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--sos-red) !important;
+}

@@ -1,0 +1,84 @@
+{% load i18n static jazzmin admin_urls %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_jazzmin_settings request as jazzmin_settings %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <script>
+        (function() {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        })();
+    </script>
+
+    <title>{% block title %}{{ title }} | {{ jazzmin_settings.site_title }}{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "vendor/fontawesome-free/css/all.min.css" %}">
+    <link rel="stylesheet" href="{% static "vendor/adminlte/css/adminlte.min.css" %}">
+    {% if jazzmin_ui.theme.name != 'default' %}
+        <link rel="stylesheet" href="{{ jazzmin_ui.theme.src }}" id="jazzmin-theme" />
+    {% endif %}
+    <link rel="stylesheet" href="{% static "jazzmin/css/main.css" %}">
+    {% if jazzmin_settings.custom_css %}
+        <link rel="stylesheet" href="{% static jazzmin_settings.custom_css %}">
+    {% endif %}
+    <link rel="shortcut icon" href="{% static jazzmin_settings.site_icon %}" type="image/png">
+    <link rel="icon" href="{% static jazzmin_settings.site_icon %}" sizes="32x32" type="image/png">
+    {% block extrastyle %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+</head>
+<body class="login-page sos-login-page">
+
+<div class="sos-login-bg">
+    <div class="sos-login-orb sos-login-orb-1"></div>
+    <div class="sos-login-orb sos-login-orb-2"></div>
+    <div class="sos-login-orb sos-login-orb-3"></div>
+    <div class="sos-login-grid"></div>
+</div>
+
+<div class="sos-login-wrapper">
+    <div class="sos-login-hero">
+        <div class="sos-login-logo-ring">
+            <div class="sos-login-logo-pulse"></div>
+            <div class="sos-login-logo-circle">
+                {% if jazzmin_settings.login_logo %}
+                    <img src="{% static jazzmin_settings.login_logo %}" alt="{{ jazzmin_settings.site_header }}" class="sos-login-logo-img">
+                {% else %}
+                    <span class="sos-login-logo-fallback">🆘</span>
+                {% endif %}
+            </div>
+        </div>
+        <h1 class="sos-login-title">SOSbot <span>SmartCane</span></h1>
+        <p class="sos-login-tagline">SOS signallarni tuman guruhlariga yo'naltirish tizimi</p>
+    </div>
+
+    <div class="sos-login-card">
+        <div class="sos-login-card-header">
+            <i class="fas fa-shield-alt"></i>
+            <p>{{ jazzmin_settings.welcome_sign }}</p>
+        </div>
+        <div class="sos-login-card-body">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="sos-login-card-footer">
+            <span class="sos-status-dot"></span> Tizim faol
+        </div>
+    </div>
+</div>
+
+<script src="{% static "admin/js/vendor/jquery/jquery.js" %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/adminlte/js/adminlte.min.js' %}"></script>
+{% if jazzmin_settings.custom_js %}
+    <script src="{% static jazzmin_settings.custom_js %}"></script>
+{% endif %}
+</body>
+</html>
