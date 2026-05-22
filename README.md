@@ -297,3 +297,6 @@ python manage.py runserver
 - PostgreSQL 16
 - Shapely (polygon aniqlash)
 - Docker + Gunicorn
+
+## Author 
+Samandar Tursunov
